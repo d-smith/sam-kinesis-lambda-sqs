@@ -24,11 +24,21 @@ Resources:
           Properties:
             Stream: !GetAtt K3.Arn
             StartingPosition: LATEST
-            BatchSize: 50 
-
+            BatchSize: 50
+      Policies:
+        - SQSSendMessagePolicy:
+            QueueName: !Join [ -, [K3Q, !Ref "Env"]]
+      Environment:
+        Variables:
+          DOWNSTREAM_Q_URL: !Ref Q3
   
   K3:
     Type: AWS::Kinesis::Stream
     Properties:
       Name: !Join [ -, [K3Stream, !Ref "Env"]]
       ShardCount: 1
+
+  Q3:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Join [ -, [K3Q, !Ref "Env"]]

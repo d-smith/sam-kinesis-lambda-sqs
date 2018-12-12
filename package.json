@@ -1,0 +1,17 @@
+{
+  "name": "sam-kinesis-lambda-sqs",
+  "version": "1.0.0",
+  "description": "Read from a stream, write to a queue, build using SAM.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "aws-sdk": "^2.374.0"
+  },
+  "dependencies": {
+    "lodash": "^4.17.11"
+  }
+}

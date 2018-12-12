@@ -1,2 +1,3 @@
 .sam-aws/
 packaged.yml
+node_modules/
