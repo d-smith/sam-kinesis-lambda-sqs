@@ -1,0 +1,34 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: >
+  Step function hello world with SAM!
+Globals:
+  Function:
+    Runtime: "nodejs8.10"
+
+Parameters:
+  Env: 
+    Type: String
+    Default: dev
+
+Resources:
+  StreamProcessor:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Join [ -, [StreamProcessor, !Ref "Env"]]
+      Handler: stream.handler
+      CodeUri: src/
+      Events:
+        StreamEvent:
+          Type: Kinesis
+          Properties:
+            Stream: !GetAtt K3.Arn
+            StartingPosition: LATEST
+            BatchSize: 50 
+
+  
+  K3:
+    Type: AWS::Kinesis::Stream
+    Properties:
+      Name: !Join [ -, [K3Stream, !Ref "Env"]]
+      ShardCount: 1
