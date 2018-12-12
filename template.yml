@@ -31,6 +31,25 @@ Resources:
       Environment:
         Variables:
           DOWNSTREAM_Q_URL: !Ref Q3
+
+  QueueProcessor:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Join [ -, [QueueProcessor, !Ref "Env"]]
+      Handler: queue.handler
+      CodeUri: src/
+      Events:
+        QueueEvent:
+          Type: SQS
+          Properties:
+            Queue: !GetAtt Q3.Arn
+            BatchSize: 1
+      Policies:
+        - SQSPollerPolicy:
+            QueueName: !Join [ -, [K3Q, !Ref "Env"]]
+      Environment:
+        Variables:
+          DOWNSTREAM_Q_URL: !Ref Q3
   
   K3:
     Type: AWS::Kinesis::Stream
